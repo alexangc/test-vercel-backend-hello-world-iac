@@ -1,0 +1,28 @@
+name: Generate OpenTofu Plan
+
+on: [pull_request]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    name: Create OpenTofu Plan
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Tofu Plan
+        uses: dflook/tofu-plan@v2
+        with:
+          path: .infrastructure
+          # label: production # Maybe these fields aren't needed yet / for us
+          # workspace: production
+          # var_file: env/production.tfvars
