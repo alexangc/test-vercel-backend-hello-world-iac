@@ -33,7 +33,7 @@ resource "vercel_project" "my_project" {
   # git_provider_options                              = null.   # gives a lint error in vscode for some reason?
   git_repository = {
     deploy_hooks      = null
-    production_branch = "master"
+    production_branch = "main"
     repo              = "alexangc/test-vercel-backend-hello-world-iac"
     type              = "github"
   }
@@ -50,7 +50,7 @@ resource "vercel_project" "my_project" {
   password_protection                     = null
   preview_deployment_suffix               = null
   preview_deployments_disabled            = false
-  prioritise_production_builds            = false
+  prioritise_production_builds            = true
   protection_bypass_for_automation        = null
   protection_bypass_for_automation_secret = null # sensitive
   public_source                           = null
