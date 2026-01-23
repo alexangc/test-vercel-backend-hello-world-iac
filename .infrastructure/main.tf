@@ -49,7 +49,7 @@ resource "vercel_project" "my_project" {
   output_directory                        = null
   password_protection                     = null
   preview_deployment_suffix               = null
-  preview_deployments_disabled            = true
+  preview_deployments_disabled            = false
   prioritise_production_builds            = true
   protection_bypass_for_automation        = null
   protection_bypass_for_automation_secret = null # sensitive
