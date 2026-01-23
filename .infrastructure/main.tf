@@ -37,7 +37,7 @@ resource "vercel_project" "my_project" {
     repo              = "alexangc/test-vercel-backend-hello-world-iac"
     type              = "github"
   }
-  ignore_command  = null
+  ignore_command  = "exit 0"
   install_command = null
   name            = "my-express-backend"
   node_version    = "22.x"
