@@ -22,5 +22,8 @@ terraform {
     # Enable state locking with a lockfile
     use_lockfile = true
 
+    encrypt = true
+
+
   }
 }
