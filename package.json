@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node --watch ./src/devServer.js",
     "dev": "node --watch ./src/devServer.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tofu:plan": "./tmp/with_creds.sh tofu -chdir=\".infrastructure\" plan -var-file=env/production.tfvars",
+    "tofu:apply": "./tmp/with_creds.sh tofu -chdir=\".infrastructure\" plan -var-file=env/production.tfvars"
   },
   "dependencies": {
     "express": "^5.2.1"

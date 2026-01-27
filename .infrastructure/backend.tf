@@ -9,7 +9,7 @@ terraform {
     }
 
     bucket = "opentofu-states"
-    key    = "default/terraform.tfstate"
+    key    = "${var.environment}/terraform.tfstate"
 
     # Deactivate a few AWS-specific checks
     skip_credentials_validation = true

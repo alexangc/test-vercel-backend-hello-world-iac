@@ -19,7 +19,7 @@ resource "vercel_project" "my_project" {
   build_command                                     = null
   build_machine_type                                = null
   customer_success_code_visibility                  = false
-  dev_command                                       = "echo 'hello world' && npm run dev"
+  dev_command                                       = var.dev_command
   directory_listing                                 = false
   enable_affected_projects_deployments              = false
   enable_preview_feedback                           = null

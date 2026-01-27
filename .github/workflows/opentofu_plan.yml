@@ -26,6 +26,5 @@ jobs:
         uses: dflook/tofu-plan@v2
         with:
           path: .infrastructure
-          # label: production # Maybe these fields aren't needed yet / for us
-          # workspace: production
-          # var_file: env/production.tfvars
+          label: production
+          var_file: .infrastructure/env/production.tfvars
