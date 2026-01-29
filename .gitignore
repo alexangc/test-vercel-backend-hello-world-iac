@@ -2,5 +2,3 @@ node_modules
 .env
 tmp
 .infrastructure/.terraform
-
-dummy-change
