@@ -25,6 +25,7 @@ jobs:
       - name: Tofu Plan
         uses: dflook/tofu-plan@v2
         with:
+          add_github_comment: changes-only
           path: .infrastructure
           label: production
           var_file: .infrastructure/env/production.tfvars
