@@ -1,5 +1,3 @@
-# dummy comment
-
 terraform {
   required_providers {
     digitalocean = {
