@@ -34,5 +34,5 @@ jobs:
           add_github_comment: changes-only
           path: .infrastructure/web1
           label: production
-          backend_config: .infrastructure/common/_backend_config.tfvars
+          backend_config: ../common/_backend_config.tfvars
           var_file: .infrastructure/web1/env/production.tfvars
