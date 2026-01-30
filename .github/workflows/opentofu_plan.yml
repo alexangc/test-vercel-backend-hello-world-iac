@@ -21,7 +21,7 @@ jobs:
   plan-web1:
     runs-on: ubuntu-latest
     environment: tofu-plan
-    name: Create OpenTofu Plan
+    name: Web1 - Create OpenTofu Plan
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -33,14 +33,14 @@ jobs:
         with:
           add_github_comment: changes-only
           path: .infrastructure/web1
-          label: production
+          label: web1/production
           backend_config: ../common/_backend_config.tfvars
           var_file: .infrastructure/web1/env/production.tfvars
 
   plan-web2:
     runs-on: ubuntu-latest
     environment: tofu-plan
-    name: Create OpenTofu Plan
+    name: Web2 - Create OpenTofu Plan
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -52,6 +52,6 @@ jobs:
         with:
           add_github_comment: changes-only
           path: .infrastructure/web2
-          label: production
+          label: web2/production
           backend_config: ../common/_backend_config.tfvars
           var_file: .infrastructure/web1/env/production.tfvars

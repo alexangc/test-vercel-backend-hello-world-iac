@@ -32,7 +32,7 @@ jobs:
         uses: dflook/tofu-apply@v2
         with:
           path: .infrastructure/web1
-          label: production
+          label: web1/production
           backend_config: ../common/_backend_config.tfvars
           var_file: .infrastructure/web1/env/production.tfvars
 
@@ -48,6 +48,6 @@ jobs:
         uses: dflook/tofu-apply@v2
         with:
           path: .infrastructure/web2
-          label: production
+          label: web2/production
           backend_config: ../common/_backend_config.tfvars
           var_file: .infrastructure/web1/env/production.tfvars
