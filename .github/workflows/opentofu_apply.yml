@@ -20,7 +20,7 @@ env:
   TF_VAR_passphrase: ${{ secrets.TF_VAR_PASSPHRASE }}
 
 jobs:
-  apply:
+  apply-web1:
     runs-on: ubuntu-latest
     name: Web1 - Apply approved plan
 
@@ -32,6 +32,22 @@ jobs:
         uses: dflook/tofu-apply@v2
         with:
           path: .infrastructure/web1
-          label: production
+          label: web1/production
+          backend_config: ../common/_backend_config.tfvars
+          var_file: .infrastructure/web1/env/production.tfvars
+
+  apply-web2:
+    runs-on: ubuntu-latest
+    name: Web2 - Apply approved plan
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: tofu apply
+        uses: dflook/tofu-apply@v2
+        with:
+          path: .infrastructure/web2
+          label: web2/production
           backend_config: ../common/_backend_config.tfvars
           var_file: .infrastructure/web1/env/production.tfvars
