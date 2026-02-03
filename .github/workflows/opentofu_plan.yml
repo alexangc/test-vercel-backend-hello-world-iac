@@ -30,7 +30,7 @@ jobs:
         env: [production, staging]
         exclude:
           - app: web2
-          - env: staging
+            env: staging
 
     steps:
       - name: Checkout Code
