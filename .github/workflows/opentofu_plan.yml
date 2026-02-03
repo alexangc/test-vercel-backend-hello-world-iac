@@ -46,3 +46,5 @@ jobs:
           label: ${{ matrix.app }}/${{ matrix.env }}
           backend_config: ../common/_backend_config.tfvars
           var_file: .infrastructure/${{ matrix.app }}/env/${{ matrix.env }}.tfvars
+
+          # tmp touch file
