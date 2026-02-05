@@ -10,6 +10,7 @@ env:
   TARGET_SECRET: ${{ secrets.PLAN_SECRETS_VERCEL_API_TOKEN }}
 
 jobs:
+  environment: tofu-production
   plan:
     runs-on: ubuntu-latest
     # environment: tofu-production # for later
