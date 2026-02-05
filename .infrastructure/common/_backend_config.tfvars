@@ -1,10 +1,16 @@
 # This config file must be passed to the `tofu init`command via the
 # `-backend-config` option.
+
+# The backend can be migrated to a new bucket using:
+# ````
+# tofu -chdir=".infrastructure/<app>" init -migrate-state -var-file="env/production.tfvars" -backend-config="../common/_backend_config.tfvars"
+# ```
+
 endpoints = {
   s3 = "https://sfo3.digitaloceanspaces.com"
 }
 
-bucket = "opentofu-states"
+bucket = "tmp-opentofu-tests"
 key    = "${var.project_name}/${var.environment}/terraform.tfstate"
 
 # Deactivate a few AWS-specific checks
