@@ -1,0 +1,26 @@
+name: Test Secret Access
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+env:
+  TARGET_SECRET: ${{ secrets.TARGET_SECRET }}
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    # environment: tofu-production # for later
+    name: Check whether a secret exists in the current environment
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Version
+        run: echo v1
+
+      - name: Assess availability
+        run: test -n "$TARGET_SECRET"
