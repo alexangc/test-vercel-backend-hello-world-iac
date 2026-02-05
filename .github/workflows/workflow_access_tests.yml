@@ -10,8 +10,8 @@ env:
   TARGET_SECRET: ${{ secrets.PLAN_SECRETS_VERCEL_API_TOKEN }}
 
 jobs:
-  environment: tofu-production
   plan:
+    environment: tofu-production
     runs-on: ubuntu-latest
     # environment: tofu-production # for later
     name: Check whether a secret exists in the current environment
