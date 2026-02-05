@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  TARGET_SECRET: ${{ secrets.TARGET_SECRET }}
+  TARGET_SECRET: ${{ secrets.PLAN_SECRETS_VERCEL_API_TOKEN }}
 
 jobs:
   plan:
