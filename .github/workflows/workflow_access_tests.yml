@@ -21,4 +21,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Version
-        run: echo v1
+        run: echo v2
