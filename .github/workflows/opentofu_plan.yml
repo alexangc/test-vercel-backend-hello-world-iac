@@ -1,9 +1,7 @@
 name: Generate OpenTofu Plan
 
 on:
-  pull_request_target:
-    paths:
-      - ".infrastructure/**"
+  issue_comment:
 
 permissions:
   contents: read
@@ -11,9 +9,10 @@ permissions:
 
 jobs:
   plan:
+    name: Create OpenTofu Plan (${{ matrix.app }} / ${{ matrix.env }})
+    if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     environment: tofu-production
-    name: Create OpenTofu Plan (${{ matrix.app }} / ${{ matrix.env }})
 
     strategy:
       fail-fast: false
