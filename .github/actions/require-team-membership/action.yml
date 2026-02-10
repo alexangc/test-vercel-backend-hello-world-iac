@@ -67,6 +67,7 @@ runs:
       with:
         script: |
           const owner = context.repo.owner;
+          const org = `${{ inputs.org_slug }}`;;
           const repo  = context.repo.repo;
           const prNumber = context.payload.issue.number;
           const username = context.payload.comment.user.login;
@@ -80,7 +81,7 @@ runs:
             `**Job:** ${job_name}\n` +
             `**Triggered by:** @${username}\n` +
             `**Reason:** ${error || "User is not authorized to run this command."}\n\n` +
-            `Only members of **@${owner}/${team_slug}** may run \`tofu plan\`.`;
+            `Only members of **@${org}/${team_slug}** may run \`tofu plan\`.`;
 
           await github.rest.issues.createComment({
             owner,
