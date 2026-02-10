@@ -1,0 +1,41 @@
+name: Require team membership
+description: Fails unless the triggering user is an active member of the given org/team
+
+inputs:
+  team_slug:
+    description: GitHub team slug (e.g. devops)
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Verify commenter is in the team
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const org = context.repo.owner;
+          const team_slug = `${{ inputs.team_slug }}`;
+          const username = context.payload.comment.user.login;
+
+          if (!context.payload.issue.pull_request) {
+            core.setFailed("This check is intended for PR comments only.");
+            return;
+          }
+
+          try {
+            const res = await github.rest.teams.getMembershipForUserInOrg({
+              org,
+              team_slug,
+              username,
+            });
+
+            const state = res.data.state;
+            if (state !== "active") {
+              core.setFailed(`User @${username} is not an active member of @${org}/${team_slug} (state=${state}).`);
+            }
+          } catch (err) {
+            core.setFailed(
+              `Cannot verify team membership for @${username} in @${org}/${team_slug}. ` +
+              `Error: ${err.status || ""} ${err.message || err}`
+            );
+          }
