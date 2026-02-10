@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Require senior approval of the plan run
-        uses: ./.github/actions/require-team-membership.yml
+        uses: ./.github/actions/require-team-membership
         with:
           team_slug: devops
 
