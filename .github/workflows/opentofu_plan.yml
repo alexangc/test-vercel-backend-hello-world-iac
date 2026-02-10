@@ -33,6 +33,7 @@ jobs:
       - name: Require senior approval of the plan run
         uses: ./.github/actions/require-team-membership
         with:
+          org_slug: AlexDummyOrg
           team_slug: devops
           job_name: ${{ format('OpenTofu Plan ({0} / {1})', matrix.app, matrix.env) }}
 
