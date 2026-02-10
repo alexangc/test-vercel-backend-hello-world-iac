@@ -10,7 +10,7 @@ permissions:
 jobs:
   plan:
     name: Create OpenTofu Plan (${{ matrix.app }} / ${{ matrix.env }})
-    if: ${{ github.event.issue.pull_request }}
+    if: ${{ github.event.issue.pull_request && github.event.comment.body == 'tofu plan' }}
     runs-on: ubuntu-latest
     environment: tofu-production
 
