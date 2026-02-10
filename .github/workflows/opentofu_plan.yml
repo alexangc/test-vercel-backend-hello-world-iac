@@ -12,7 +12,7 @@ permissions:
 jobs:
   plan:
     name: Create OpenTofu Plan (${{ matrix.app }} / ${{ matrix.env }})
-    if: ${{ github.event.label.name == 'tofu-plan' }}
+    if: ${{ contains(github.event.label.name, 'tofu-plan') }}
     runs-on: ubuntu-latest
     environment: tofu-production
 
