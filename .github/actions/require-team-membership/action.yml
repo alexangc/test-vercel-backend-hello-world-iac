@@ -64,9 +64,14 @@ runs:
           const username = context.payload.comment.user.login;
           const team_slug = core.getInput("team_slug");
 
+          const workflowName = process.env.GITHUB_WORKFLOW;
+          const jobId = process.env.GITHUB_JOB;
+
           const error = `${{ steps.auth.outputs.error }}`.trim();
           const body =
             `⚠️ OpenTofu plan was **not** started.\n\n` +
+            `**Job:** ${workflowName} / ${jobId}\n` +
+            `**Triggered by:** @${username}\n` +
             `**Reason:** ${error || "User is not authorized to run this command."}\n\n` +
             `Only members of **@${owner}/${team_slug}** may run \`tofu plan\`.`;
 
