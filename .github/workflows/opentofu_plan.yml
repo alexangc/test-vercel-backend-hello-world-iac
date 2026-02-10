@@ -27,30 +27,18 @@ jobs:
 
     steps:
       - name: Checkout code from `main` (safe and reviewed)
+        # (the checkout from `main` is caused by `issue_comment`)
         uses: actions/checkout@v4
 
-      - name: Debug grÒanted permissions (headers)
-        uses: actions/github-script@v7
+      - name: Require senior approval of the plan run
+        uses: ./.github/actions/require-team-membership
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
+          org_slug: AlexDummyOrg
+          team_slug: devops
+          job_name: ${{ format('OpenTofu Plan ({0} / {1})', matrix.app, matrix.env) }}
 
-            const res = await github.request('GET /repos/{owner}/{repo}', { owner, repo });
-            core.info(`x-accepted-github-permissions: ${res.headers['x-accepted-github-permissions'] || ''}`);
-            core.info(`x-oauth-scopes: ${res.headers['x-oauth-scopes'] || ''}`);
-            core.info(`x-accepted-oauth-scopes: ${res.headers['x-accepted-oauth-scopes'] || ''}`);
-
-      - name: Debug granted permissions (PAT)
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.ORG_READ_TOKEN }}
-          script: |
-            const res = await github.request('GET /repos/{owner}/{repo}', { owner: context.repo.owner, repo: context.repo.repo });
-            core.info(`x-accepted-github-permissions: ${res.headers['x-accepted-github-permissions'] || ''}`);
-            core.info(`x-oauth-scopes: ${res.headers['x-oauth-scopes'] || ''}`);
-
-            
       - name: Load PR metadata
         id: pr
         uses: actions/github-script@v7
