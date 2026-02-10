@@ -74,6 +74,7 @@ jobs:
       - name: Tofu Plan
         uses: dflook/tofu-plan@v2
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TF_INPUT: "0"
           VERCEL_API_TOKEN: ${{ secrets.PLAN_SECRETS_VERCEL_API_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
