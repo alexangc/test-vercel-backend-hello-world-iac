@@ -34,7 +34,7 @@ jobs:
         uses: ./.github/actions/require-team-membership
         with:
           team_slug: devops
-          job_name: OpenTofu Plan (${{ matrix.app }} / ${{ matrix.env }})
+          job_name: ${{ format('OpenTofu Plan ({0} / {1})', matrix.app, matrix.env) }}
 
       - name: Load PR metadata
         id: pr
