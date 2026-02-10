@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: Checkout code from `main` (safe and reviewed)
-        # (the checkout from `main` is cause by `pull_request_target`)
+        # (the checkout from `main` is caused by `issue_comment`)
         uses: actions/checkout@v4
 
       - name: Require senior approval of the plan run
