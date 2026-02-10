@@ -56,6 +56,12 @@ runs:
             );
           }
 
+    - name: Debug inputs
+      shell: bash
+      run: |
+        echo "team_slug='${{ inputs.team_slug }}'"
+        echo "job_name='${{ inputs.job_name }}'"
+
     - name: Comment authorization error
       if: steps.auth.outputs.authorized != 'true'
       uses: actions/github-script@v7
