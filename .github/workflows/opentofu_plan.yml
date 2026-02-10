@@ -41,7 +41,7 @@ jobs:
           rsync -a --delete tmp_pr_content/.infrastructure/ .infrastructure/
 
       - name: Version
-        run: echo v3
+        run: echo v4
 
       - name: Tofu Plan
         uses: dflook/tofu-plan@v2
