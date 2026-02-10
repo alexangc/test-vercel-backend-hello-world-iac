@@ -6,7 +6,7 @@ inputs:
     description: GitHub team slug (e.g. devops)
     required: true
   job_name:
-    description: The job calling the action
+    description: The job calling the action (display name)
     required: true
 
 runs:
@@ -19,11 +19,13 @@ runs:
         script: |
           const org = context.repo.owner;
           const username = context.payload.comment.user.login;
-          const team_slug = core.getInput("team_slug");
+          const team_slug = `${{ inputs.team_slug }}`;
 
+          // Default to unauthorized until proven otherwise
           core.setOutput("authorized", "false");
           core.setOutput("error", "");
 
+          // should only run on PR comments
           if (!context.payload.issue.pull_request) {
             core.setOutput("error", "This command only works on pull requests.");
             return;
@@ -56,12 +58,6 @@ runs:
             );
           }
 
-    - name: Debug inputs
-      shell: bash
-      run: |
-        echo "team_slug='${{ inputs.team_slug }}'"
-        echo "job_name='${{ inputs.job_name }}'"
-
     - name: Comment authorization error
       if: steps.auth.outputs.authorized != 'true'
       uses: actions/github-script@v7
@@ -71,8 +67,9 @@ runs:
           const repo  = context.repo.repo;
           const prNumber = context.payload.issue.number;
           const username = context.payload.comment.user.login;
-          const team_slug = core.getInput("team_slug");
-          const job_name = core.getInput("job_name");
+
+          const team_slug = `${{ inputs.team_slug }}`;
+          const job_name  = `${{ inputs.job_name }}`;
 
           const error = `${{ steps.auth.outputs.error }}`.trim();
           const body =
