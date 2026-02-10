@@ -5,6 +5,9 @@ inputs:
   team_slug:
     description: GitHub team slug (e.g. devops)
     required: true
+  job_name:
+    description: The job calling the action
+    required: true
 
 runs:
   using: "composite"
@@ -64,13 +67,10 @@ runs:
           const username = context.payload.comment.user.login;
           const team_slug = core.getInput("team_slug");
 
-          const workflowName = process.env.GITHUB_WORKFLOW;
-          const jobId = process.env.GITHUB_JOB;
-
           const error = `${{ steps.auth.outputs.error }}`.trim();
           const body =
             `⚠️ OpenTofu plan was **not** started.\n\n` +
-            `**Job:** ${workflowName} / ${jobId}\n` +
+            `**Job:** ${job_name}\n` +
             `**Triggered by:** @${username}\n` +
             `**Reason:** ${error || "User is not authorized to run this command."}\n\n` +
             `Only members of **@${owner}/${team_slug}** may run \`tofu plan\`.`;
