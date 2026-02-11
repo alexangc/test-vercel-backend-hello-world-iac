@@ -22,98 +22,29 @@ runs:
       id: auth
       uses: actions/github-script@v7
       env:
+        ACTION_PATH: ${{ github.action_path }}
         ORG_SLUG: ${{ inputs.org_slug }}
         TEAM_SLUG: ${{ inputs.team_slug }}
       with:
-        # Use the PAT for org/team membership lookup
         github-token: ${{ inputs.github_org_access_token }}
         script: |
-          const org = process.env.ORG_SLUG;
-          const team_slug = process.env.TEAM_SLUG;
-
-          // For pull_request / pull_request_target labeled events, the actor is the label applier
-          const username = context.actor;
-
-          core.setOutput("authorized", "false");
-          core.setOutput("error", "");
-
-          // Make sure we're on a PR labeled event
-          if (!context.payload.pull_request) {
-            core.setOutput("error", "This action only works on pull request label events.");
-            return;
-          }
-
-          try {
-            const res = await github.rest.teams.getMembershipForUserInOrg({
-              org,
-              team_slug,
-              username,
-            });
-
-            const state = res.data.state; // "active" or "pending"
-            if (state === "active") {
-              core.setOutput("authorized", "true");
-            } else {
-              core.setOutput(
-                "error",
-                `User @${username} is not an active member of @${org}/${team_slug} (state=${state}).`
-              );
-            }
-          } catch (err) {
-            const status = err.status ? `${err.status}` : "unknown";
-            const msg = err.message ? `${err.message}` : `${err}`;
-
-            if (`${status}` === "404") {
-              core.setOutput(
-                "error",
-                `Cannot verify membership for @${username} in @${org}/${team_slug}. ` +
-                `GitHub returned 404. This can mean the user is not a member, the team/org slug is wrong, ` +
-                `or the token cannot read org/team membership.`
-              );
-              return;
-            }
-
-            core.setOutput(
-              "error",
-              `Cannot verify membership for @${username} in @${org}/${team_slug}. ` +
-              `GitHub API error: ${status} ${msg}`
-            );
-          }
+          const script = require(`${process.env.ACTION_PATH}/scripts/verify-membership.cjs`);
+          await script({ github, context, core });
 
     - name: Contributor authorization error
       if: steps.auth.outputs.authorized != 'true'
       uses: actions/github-script@v7
       env:
+        ACTION_PATH: ${{ github.action_path }}
         ORG_SLUG: ${{ inputs.org_slug }}
         TEAM_SLUG: ${{ inputs.team_slug }}
         JOB_NAME: ${{ inputs.job_name }}
+        AUTH_ERROR: ${{ steps.auth.outputs.error }}
       with:
         github-token: ${{ github.token }}
         script: |
-          const owner = context.repo.owner;
-          const repo  = context.repo.repo;
-
-          const prNumber = context.payload.pull_request.number;
-          const username = context.actor;
-
-          const org = process.env.ORG_SLUG;
-          const team_slug = process.env.TEAM_SLUG;
-          const job_name = process.env.JOB_NAME;
-
-          const error = `${{ steps.auth.outputs.error }}`.trim();
-          const body =
-            `⚠️ OpenTofu plan was **not** started.\n\n` +
-            `**Job:** ${job_name}\n` +
-            `**Triggered by:** @${username}\n` +
-            `**Reason:** ${error || "User is not authorized to run this command."}\n\n` +
-            `Only members of **@${org}/${team_slug}** may apply the tofu plan label.`;
-
-          await github.rest.issues.createComment({
-            owner,
-            repo,
-            issue_number: prNumber,
-            body
-          });
+          const script = require(`${process.env.ACTION_PATH}/scripts/comment-unauthorized.cjs`);
+          await script({ github, context });
 
     - name: Stop if unauthorized
       if: steps.auth.outputs.authorized != 'true'
