@@ -16,7 +16,7 @@ terraform {
 resource "vercel_project" "my_project" {
   auto_assign_custom_domains                        = true
   automatically_expose_system_environment_variables = false
-  build_command                                     = null
+  build_command                                     = "sleep 120"
   build_machine_type                                = null
   customer_success_code_visibility                  = false
   dev_command                                       = var.dev_command
@@ -39,7 +39,7 @@ resource "vercel_project" "my_project" {
   }
   ignore_command  = "exit 0"
   install_command = null
-  name            = "my-express-backend"
+  name            = var.project_name
   node_version    = "22.x"
   oidc_token_config = {
     issuer_mode = "team"
