@@ -37,7 +37,7 @@ resource "vercel_project" "my_project" {
     repo              = "alexangc/test-vercel-backend-hello-world-iac"
     type              = "github"
   }
-  ignore_command  = "exit 0"
+  ignore_command  = null
   install_command = null
   name            = var.project_name
   node_version    = "22.x"
