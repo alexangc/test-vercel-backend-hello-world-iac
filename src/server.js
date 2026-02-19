@@ -11,7 +11,5 @@ app.get("/api/hello", (_, res) => {
   res.json({ message: "Hello from the API!" });
 });
 
-// touch a
-
 export default app; // Export for Vercel serverless function
 // touch b
