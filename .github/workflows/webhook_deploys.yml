@@ -11,6 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: tofu-production
 
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [web1]
+        env: [production]
+
     steps:
       - name: Wait 1 minute before deploying
         run: sleep 20
@@ -18,21 +24,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup OpenTofu
-        uses: opentofu/setup-opentofu@v1
-
-      - name: Tofu Init
-        run: tofu \
-              -chdir=".infrastructure/web1" \
-              init \
-                -var-file="env/production.tfvars" \
-                -backend-config="../common/_backend_config.tfvars"
+      - name: Gathering Tofu Output
+        uses: dflook/tofu-output@v2
+        id: tf-outputs
         env:
-          VERCEL_API_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TF_INPUT: "0"
+          VERCEL_API_TOKEN: ${{ secrets.PLAN_SECRETS_VERCEL_API_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          TF_VAR_passphrase: ${{ secrets.TF_VAR_PASSPHRASE }}
+        with:
+          path: .infrastructure/${{ matrix.app }}
+          backend_config: ../common/_backend_config.tfvars
+          var_file: .infrastructure/${{ matrix.app }}/env/${{ matrix.env }}.tfvars
 
       - name: Trigger Vercel Deploy Hook
         run: |
-          DEPLOY_HOOK_URL=$(tofu -chdir=".infrastructure/web1" output -var-file="env/production.tfvars" -raw tofu_web1_deploy_hook_url)
-          curl -s -X POST "$DEPLOY_HOOK_URL" \
+          curl -s -X POST "${{ steps.tf-outputs.outputs.tofu_web1_deploy_hook_url }}" \
             --fail \
             --show-error
