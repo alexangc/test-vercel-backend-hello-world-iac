@@ -35,6 +35,12 @@ resource "vercel_project" "my_project" {
     production_branch = "main"
     repo              = "alexdragongc/test-vercel-backend-hello-world-iac"
     type              = "github"
+    deploy_hooks = [
+      {
+        name = "deploy-from-tofu-workflows"
+        ref  = "main"
+      }
+    ]
   }
   ignore_command  = null
   install_command = null
@@ -68,3 +74,10 @@ resource "vercel_project" "my_project" {
   }
 }
 
+output "tofu_web1_deploy_hook_url" {
+  value = [
+    for hook in vercel_project.my_project.git_repository.deploy_hooks : hook.url
+    if hook.name == "deploy-from-tofu-workflows"
+  ][0]
+  sensitive = true
+}
