@@ -15,6 +15,21 @@ jobs:
       - name: Wait 1 minute before deploying
         run: sleep 20
 
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+
+      - name: Tofu Init
+        run: tofu \
+              -chdir=".infrastructure/web1" \
+              init \
+                -var-file="env/production.tfvars" \
+                -backend-config="../common/_backend_config.tfvars"
+        env:
+          VERCEL_API_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
+
       - name: Trigger Vercel Deploy Hook
         run: |
           DEPLOY_HOOK_URL=$(tofu -chdir=".infrastructure/web1" output -var-file="env/production.tfvars" -raw tofu_web1_deploy_hook_url)
