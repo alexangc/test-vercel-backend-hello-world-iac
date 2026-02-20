@@ -1,6 +1,6 @@
 variable "project_name" {
   description = "The unique name of the project at the IaC level (eg: 'web', 'serverless')"
-  type = string
+  type        = string
 }
 
 variable "environment" {
